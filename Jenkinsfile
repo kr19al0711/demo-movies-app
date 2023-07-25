@@ -1,11 +1,29 @@
 pipeline{
     agent any
     stages{
-        stage("test"){
+        
+        stage("Check npm and node installation"){
             steps{
-            sh '''
-                ls -la
-            '''
+            
+            nodejs(cacheLocationStrategy: workspace(), nodeJSInstallationName: 'default') {
+                sh '''
+                    ls -la
+                    npm --version
+                    node -v
+                '''
+                }
+            }
+        }
+        stage("Build Frontend"){
+            steps{
+                nodejs(cacheLocationStrategy: workspace(), nodeJSInstallationName: 'default') {
+                sh '''
+                    ls -la
+                    cd client
+                    npm install
+                '''
+            }
+
             }
         }
     }
